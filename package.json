@@ -5,7 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "vitest packages/",
-    "test:coverage": "vitest run --coverage"
+    "test:once": "vitest run packages/",
+    "test:coverage": "vitest run --coverage",
+    "build:utils": "pnpm run --filter @pudge-fe/utils build",
+    "build:reactivity": "pnpm run --filter @pudge-fe/reactivity build",
+    "build": "pnpm run --filter=\"@pudge-fe/*\" build"
   },
   "keywords": [],
   "author": "nbhaohao@163.com",
