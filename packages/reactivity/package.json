@@ -1,5 +1,5 @@
 {
-  "name": "@pudge-fe/utils",
+  "name": "@pudge-fe/reactivity",
   "version": "1.0.0",
   "description": "",
   "type": "module",
@@ -19,7 +19,10 @@
     "build": "unbuild",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "dependencies": {
+    "@pudge-fe/utils": "workspace:*"
+  },
   "keywords": [],
-  "author": "nbhaohoa@163.com",
+  "author": "nbhaohao@163.com",
   "license": "ISC"
 }
