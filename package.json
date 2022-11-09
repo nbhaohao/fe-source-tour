@@ -9,13 +9,18 @@
     "test:coverage": "vitest run --coverage",
     "build:utils": "pnpm run --filter @pudge-fe/utils build",
     "build:reactivity": "pnpm run --filter @pudge-fe/reactivity build",
-    "build": "pnpm run --filter=\"@pudge-fe/*\" build"
+    "build": "pnpm run --filter=\"@pudge-fe/*\" build",
+    "lint": "eslint packages/**/src",
+    "lint:fix": "eslint packages/**/src --fix"
   },
   "keywords": [],
   "author": "nbhaohao@163.com",
   "license": "ISC",
   "devDependencies": {
+    "@antfu/eslint-config": "^0.29.4",
     "@vitest/coverage-c8": "^0.25.1",
+    "eslint": "^8.27.0",
+    "prettier": "^2.7.1",
     "typescript": "^4.8.4",
     "unbuild": "^0.9.4",
     "vitest": "^0.25.1"
