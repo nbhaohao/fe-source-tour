@@ -4,7 +4,10 @@ import { effect, reactive, ref } from '../src'
 describe('reactive', () => {
   describe('reactive and effect', () => {
     it('should call effect callback when it initializes and the object is changed', () => {
-      const object = reactive({ count: 1 })
+      const object: { name?: string; count: number } = reactive({
+        count: 1,
+        name: 'pudge',
+      })
       let dummy
       effect(() => {
         dummy = object.count
@@ -12,6 +15,13 @@ describe('reactive', () => {
       expect(dummy).toBe(1)
       object.count++
       expect(dummy).toBe(2)
+      let dummy2
+      effect(() => {
+        dummy2 = object.name
+      })
+      expect(dummy2).toBe('pudge')
+      delete object.name
+      expect(dummy2).toBeUndefined()
     })
     it('should support nest object', () => {
       const object = reactive({ info: { username: 'pudge' } })
