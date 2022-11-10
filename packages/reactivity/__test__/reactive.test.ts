@@ -25,5 +25,15 @@ describe('reactive', () => {
       num.value++
       expect(dummy).toBe(2)
     })
+    it('should still work correct when param is object', () => {
+      const num = ref({ count: 1 })
+      let dummy
+      effect(() => {
+        dummy = num.value.count
+      })
+      expect(num.value.count).toBe(1)
+      num.value.count++
+      expect(dummy).toBe(2)
+    })
   })
 })

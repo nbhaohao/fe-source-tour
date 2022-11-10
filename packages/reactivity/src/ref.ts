@@ -1,4 +1,6 @@
+import { isObject } from '@pudge-fe/utils'
 import { track, trigger } from './effect'
+import { reactive } from './reactive'
 
 export function ref<T>(value: T): { value: T } {
   return new RefImpl(value)
@@ -9,7 +11,7 @@ class RefImpl {
   _value: any
   constructor(value: any) {
     this.isRef = true
-    this._value = value
+    this._value = convert(value)
   }
 
   get value() {
@@ -23,4 +25,8 @@ class RefImpl {
       trigger(this, 'ref-set', 'value')
     }
   }
+}
+
+function convert(value: any) {
+  return isObject(value) ? reactive(value) : value
 }
