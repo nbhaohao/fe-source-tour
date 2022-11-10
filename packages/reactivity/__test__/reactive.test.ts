@@ -13,6 +13,16 @@ describe('reactive', () => {
       object.count++
       expect(dummy).toBe(2)
     })
+    it('should support nest object', () => {
+      const object = reactive({ info: { username: 'pudge' } })
+      let dummy
+      effect(() => {
+        dummy = object.info.username
+      })
+      expect(dummy).toBe('pudge')
+      object.info.username = 'egdup'
+      expect(dummy).toBe('egdup')
+    })
   })
   describe('ref', () => {
     it('should call effect callback when it initializes and the value is changed', () => {
