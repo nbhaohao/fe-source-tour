@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { effect, reactive, ref } from '../src'
 
 describe('reactive', () => {
@@ -32,6 +32,23 @@ describe('reactive', () => {
       expect(dummy).toBe('pudge')
       object.info.username = 'egdup'
       expect(dummy).toBe('egdup')
+    })
+    it('should use reflect instead of using object operators', () => {
+      const obj = {
+        _count: 1,
+        get count() {
+          return this._count
+        },
+      }
+      expect(obj.count).toBe(1)
+      const result = reactive(obj)
+      const fn = vi.fn(arg => arg)
+      effect(() => {
+        fn(result.count)
+      })
+      expect(fn).toBeCalledTimes(1)
+      result._count++
+      expect(fn).toBeCalledTimes(2)
     })
   })
   describe('ref', () => {

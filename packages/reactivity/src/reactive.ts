@@ -5,16 +5,15 @@ type KeyField<T> = keyof T
 
 export function reactive<T extends object>(object: T): T {
   return new Proxy(object, {
-    get(target, key) {
-      const value: any = target[key as KeyField<typeof object>]
+    get(target, key, receiver) {
+      const value: any = Reflect.get(target, key, receiver)
       track(target, 'get', key as KeyField<typeof object>)
       return isObject(value) ? reactive(value) : value
     },
-    set(target, key, value) {
-      target[key as KeyField<typeof object>] = value
-      // const result = Reflect.set(target, key, value, receiver)
+    set(target, key, value, receiver) {
+      const result = Reflect.set(target, key, value, receiver)
       trigger(target, 'set', key as KeyField<typeof object>)
-      return true
+      return result
     },
     deleteProperty(target, key) {
       const result = Reflect.deleteProperty(target, key)
