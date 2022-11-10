@@ -17,7 +17,7 @@
   ],
   "scripts": {
     "build": "unbuild",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest"
   },
   "dependencies": {
     "@pudge-fe/utils": "workspace:*"
