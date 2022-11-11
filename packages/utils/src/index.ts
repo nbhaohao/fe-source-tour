@@ -5,3 +5,7 @@ export function isObject(val: any): val is object {
 export function isOn(key: string): boolean {
   return key[0] === 'o' && key[1] === 'n'
 }
+
+export function toRawType(value: any) {
+  return Object.prototype.toString.call(value).slice(8, -1)
+}

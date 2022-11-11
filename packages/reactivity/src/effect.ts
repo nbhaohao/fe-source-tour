@@ -1,9 +1,11 @@
 const targetMap = new WeakMap<any, Map<any, Set<() => void>>>()
 
 let activeEffect: (() => void) | null
+const effectStack: (() => void)[] = []
+
 export function track<T extends object>(
   target: T,
-  type: 'get' | 'ref-get',
+  type: 'get' | 'ref-get' | 'collection-size',
   key: keyof T,
 ): void {
   if (!activeEffect) {
@@ -26,7 +28,7 @@ export function track<T extends object>(
 
 export function trigger<T extends object>(
   target: T,
-  type: 'set' | 'ref-set',
+  type: 'set' | 'ref-set' | 'delete' | 'collection-add',
   key: keyof T,
 ): void {
   targetMap
@@ -37,6 +39,8 @@ export function trigger<T extends object>(
 
 export function effect(fn: () => void) {
   activeEffect = fn
+  effectStack.push(activeEffect)
   fn()
-  activeEffect = null
+  effectStack.pop()
+  activeEffect = effectStack[effectStack.length - 1] || null
 }

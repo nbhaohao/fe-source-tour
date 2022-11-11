@@ -50,6 +50,17 @@ describe('reactive', () => {
       result._count++
       expect(fn).toBeCalledTimes(2)
     })
+    // it.todo('should support set')
+    it('should support set', () => {
+      const set = reactive(new Set([1]))
+      let value
+      effect(() => {
+        value = set.size
+      })
+      expect(value).toBe(1)
+      set.add(2)
+      expect(value).toBe(2)
+    })
   })
   describe('ref', () => {
     it('should call effect callback when it initializes and the value is changed', () => {

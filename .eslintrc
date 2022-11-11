@@ -3,7 +3,8 @@
   "overrides": [
     {
       "rules": {
-        "curly": "off"
+        "curly": "off",
+        "operator-linebreak": "off"
       },
       "files": "packages/**/*.ts"
     }
