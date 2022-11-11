@@ -1,5 +1,6 @@
 import { isObject, toRawType } from '@pudge-fe/utils'
 import { track, trigger } from './effect'
+import { COLLECTION_KEY } from './consts'
 
 const enum TARGET_TYPE {
   INVALID = 0,
@@ -48,7 +49,12 @@ const collectionActions = {
     trigger(target, 'collection-add', param)
     return result
   },
-  delete() {},
+  delete(param: any) {
+    const target = (this as any).__reactive_raw
+    const result = target.delete(param)
+    trigger(target, 'collection-delete', param)
+    return result
+  },
   has() {},
 }
 
@@ -58,7 +64,7 @@ const collectionHandler: ProxyHandler<any> = {
       return target
     }
     if (key === 'size') {
-      track(target, 'collection-size', key)
+      track(target, 'collection-size', COLLECTION_KEY)
       return Reflect.get(target, key)
     }
     return collectionActions[key as keyof typeof collectionActions]

@@ -60,6 +60,8 @@ describe('reactive', () => {
       expect(value).toBe(1)
       set.add(2)
       expect(value).toBe(2)
+      set.delete(2)
+      expect(value).toBe(1)
     })
   })
   describe('ref', () => {

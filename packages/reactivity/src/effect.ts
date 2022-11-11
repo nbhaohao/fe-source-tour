@@ -1,3 +1,5 @@
+import { COLLECTION_KEY } from './consts'
+
 const targetMap = new WeakMap<any, Map<any, Set<() => void>>>()
 
 let activeEffect: (() => void) | null
@@ -28,12 +30,16 @@ export function track<T extends object>(
 
 export function trigger<T extends object>(
   target: T,
-  type: 'set' | 'ref-set' | 'delete' | 'collection-add',
+  type: 'set' | 'ref-set' | 'delete' | 'collection-add' | 'collection-delete',
   key: keyof T,
 ): void {
+  let keyName: any = key
+  if (type === 'collection-add' || type === 'collection-delete') {
+    keyName = COLLECTION_KEY
+  }
   targetMap
     .get(target)
-    ?.get(key)
+    ?.get(keyName)
     ?.forEach(effect => effect())
 }
 
