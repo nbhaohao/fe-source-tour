@@ -1,9 +1,13 @@
 import { isObject } from '@pudge-fe/utils'
 import { track, trigger } from './effect'
 import { reactive } from './reactive'
+import { REACTIVE_FLAGS } from './consts'
 
 function createGetter(isShadow?: boolean): ProxyHandler<any>['get'] {
   return (target, key, receiver) => {
+    if (key === REACTIVE_FLAGS.IS_REACTIVE) {
+      return true
+    }
     const value: any = Reflect.get(target, key, receiver)
     track(target, 'get', key)
     return isShadow ? value : isObject(value) ? reactive(value) : value

@@ -1,5 +1,12 @@
 import { describe, expect, it, vi } from 'vitest'
-import { effect, reactive, ref, shadowReactive } from '../src'
+import {
+  effect,
+  isReactive,
+  isRef,
+  reactive,
+  ref,
+  shadowReactive,
+} from '../src'
 
 describe('reactive', () => {
   describe('reactive and effect', () => {
@@ -102,6 +109,19 @@ describe('reactive', () => {
       expect(value1).toBe(2)
       object.info.username = 'hello'
       expect(value2).toBe('pudge')
+    })
+  })
+  describe('utilities', () => {
+    it('should return correct result', () => {
+      const value = ref(1)
+      const value2 = reactive({ name: 'pudge' })
+      const value3 = shadowReactive({ name: 'pudge' })
+      expect(isRef(value)).toBeTruthy()
+      expect(isReactive(value2)).toBeTruthy()
+      expect(isReactive(value3)).toBeTruthy()
+      expect(isReactive(value)).toBeFalsy()
+      expect(isRef(value3)).toBeFalsy()
+      expect(isRef(value3)).toBeFalsy()
     })
   })
 })

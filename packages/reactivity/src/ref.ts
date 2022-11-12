@@ -2,6 +2,10 @@ import { isObject } from '@pudge-fe/utils'
 import { track, trigger } from './effect'
 import { reactive } from './reactive'
 
+export function isRef(value: any) {
+  return value.isRef
+}
+
 export function ref<T>(value: T): { value: T } {
   return new RefImpl(value)
 }
