@@ -1,5 +1,5 @@
 import { toRawType } from '@pudge-fe/utils'
-import { baseHandler } from './baseHandler'
+import { baseHandler, shadowReactiveHandler } from './baseHandler'
 import { collectionHandler } from './collectionHandler'
 
 const enum TARGET_TYPE {
@@ -21,6 +21,14 @@ function targetTypeMap(type: string): TARGET_TYPE {
     default:
       return TARGET_TYPE.INVALID
   }
+}
+
+export function shadowReactive<T extends object>(object: T): T {
+  const handler =
+    targetTypeMap(toRawType(object)) === TARGET_TYPE.COMMON
+      ? shadowReactiveHandler
+      : collectionHandler
+  return new Proxy(object, handler)
 }
 
 export function reactive<T extends object>(object: T): T {

@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { effect, reactive, ref } from '../src'
+import { effect, reactive, ref, shadowReactive } from '../src'
 
 describe('reactive', () => {
   describe('reactive and effect', () => {
@@ -86,6 +86,22 @@ describe('reactive', () => {
       expect(num.value.count).toBe(1)
       num.value.count++
       expect(dummy).toBe(2)
+    })
+  })
+  describe('shadowReactive', () => {
+    it('should not impact nest object', () => {
+      const object = shadowReactive({ count: 1, info: { username: 'pudge' } })
+      let value1, value2
+      effect(() => {
+        value1 = object.count
+        value2 = object.info.username
+      })
+      expect(value1).toBe(1)
+      expect(value2).toBe('pudge')
+      object.count++
+      expect(value1).toBe(2)
+      object.info.username = 'hello'
+      expect(value2).toBe('pudge')
     })
   })
 })
