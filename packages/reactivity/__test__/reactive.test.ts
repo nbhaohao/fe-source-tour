@@ -62,6 +62,8 @@ describe('reactive', () => {
       expect(value).toBe(2)
       set.delete(2)
       expect(value).toBe(1)
+      expect(set.has(1)).toBeTruthy()
+      expect(set.has(2)).toBeFalsy()
     })
   })
   describe('ref', () => {

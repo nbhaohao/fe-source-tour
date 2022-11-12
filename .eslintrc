@@ -4,7 +4,8 @@
     {
       "rules": {
         "curly": "off",
-        "operator-linebreak": "off"
+        "operator-linebreak": "off",
+        "@typescript-eslint/indent": "off"
       },
       "files": "packages/**/*.ts"
     }

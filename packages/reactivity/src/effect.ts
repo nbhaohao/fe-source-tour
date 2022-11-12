@@ -30,7 +30,13 @@ export function track<T extends object>(
 
 export function trigger<T extends object>(
   target: T,
-  type: 'set' | 'ref-set' | 'delete' | 'collection-add' | 'collection-delete',
+  type:
+    | 'set'
+    | 'ref-set'
+    | 'delete'
+    | 'collection-add'
+    | 'collection-delete'
+    | 'collection-has',
   key: keyof T,
 ): void {
   let keyName: any = key

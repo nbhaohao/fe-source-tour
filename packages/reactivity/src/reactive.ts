@@ -55,7 +55,12 @@ const collectionActions = {
     trigger(target, 'collection-delete', param)
     return result
   },
-  has() {},
+  has(param: any) {
+    const target = (this as any)[REACTIVE_FLAGS.RAW]
+    const result = target.has(param)
+    trigger(target, 'collection-has', param)
+    return result
+  },
 }
 
 const collectionHandler: ProxyHandler<any> = {
