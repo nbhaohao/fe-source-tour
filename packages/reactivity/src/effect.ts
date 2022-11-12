@@ -2,7 +2,12 @@ import { COLLECTION_KEY } from './consts'
 
 const targetMap = new WeakMap<any, Map<any, Set<() => void>>>()
 
-let activeEffect: (() => void) | null
+interface ActiveEffect {
+  (): void
+  deps?: any[]
+}
+
+let activeEffect: ActiveEffect
 const effectStack: (() => void)[] = []
 
 export function track<T extends object>(
@@ -26,6 +31,7 @@ export function track<T extends object>(
     depsMap.set(key, deps)
   }
   deps.add(activeEffect as () => void)
+  activeEffect.deps?.push(deps)
 }
 
 export function trigger<T extends object>(
@@ -43,16 +49,37 @@ export function trigger<T extends object>(
   if (type === 'collection-add' || type === 'collection-delete') {
     keyName = COLLECTION_KEY
   }
-  targetMap
-    .get(target)
-    ?.get(keyName)
-    ?.forEach(effect => effect())
+  const deps = targetMap.get(target)?.get(keyName)
+  if (deps) {
+    new Set(deps).forEach(effect => effect())
+  }
+}
+
+function clearUp(effectFn: ActiveEffect) {
+  if (!effectFn.deps?.length) {
+    return
+  }
+  for (let i = 0; i < effectFn.deps.length; i++) {
+    effectFn.deps[i].delete(effectFn)
+  }
+  effectFn.deps = []
 }
 
 export function effect(fn: () => void) {
-  activeEffect = fn
-  effectStack.push(activeEffect)
-  fn()
-  effectStack.pop()
-  activeEffect = effectStack[effectStack.length - 1] || null
+  const effectFn = () => {
+    let fnResult
+    try {
+      activeEffect = effectFn
+      effectStack.push(activeEffect)
+      clearUp(effectFn)
+      fnResult = fn()
+    } finally {
+      effectStack.pop()
+      activeEffect = effectStack[effectStack.length - 1] || null
+    }
+    return fnResult
+  }
+  effectFn.deps = [] as any[]
+  effectFn()
+  return effectFn
 }

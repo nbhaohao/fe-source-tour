@@ -40,6 +40,24 @@ describe('reactive', () => {
       object.info.username = 'egdup'
       expect(dummy).toBe('egdup')
     })
+    it('should clean some useless reactivates', () => {
+      const object = reactive({
+        ok: true,
+        name: 'pudge',
+      })
+      let value
+      const fn = vi.fn(() => {
+        value = object.ok ? object.name : 'vue3'
+      })
+      effect(fn)
+      expect(value).toBe('pudge')
+      expect(fn).toBeCalledTimes(1)
+      object.ok = false
+      expect(value).toBe('vue3')
+      expect(fn).toBeCalledTimes(2)
+      object.name = 'hello'
+      expect(fn).toBeCalledTimes(2)
+    })
     it('should use reflect instead of using object operators', () => {
       const obj = {
         _count: 1,
@@ -57,7 +75,6 @@ describe('reactive', () => {
       result._count++
       expect(fn).toBeCalledTimes(2)
     })
-    // it.todo('should support set')
     it('should support set', () => {
       const set = reactive(new Set([1]))
       let value
