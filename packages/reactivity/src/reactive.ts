@@ -1,6 +1,6 @@
 import { isObject, toRawType } from '@pudge-fe/utils'
 import { track, trigger } from './effect'
-import { COLLECTION_KEY } from './consts'
+import { COLLECTION_KEY, REACTIVE_FLAGS } from './consts'
 
 const enum TARGET_TYPE {
   INVALID = 0,
@@ -44,13 +44,13 @@ const baseHandler: ProxyHandler<any> = {
 
 const collectionActions = {
   add(param: any) {
-    const target = (this as any).__reactive_raw
+    const target = (this as any)[REACTIVE_FLAGS.RAW]
     const result = target.add(param)
     trigger(target, 'collection-add', param)
     return result
   },
   delete(param: any) {
-    const target = (this as any).__reactive_raw
+    const target = (this as any)[REACTIVE_FLAGS.RAW]
     const result = target.delete(param)
     trigger(target, 'collection-delete', param)
     return result
@@ -60,7 +60,7 @@ const collectionActions = {
 
 const collectionHandler: ProxyHandler<any> = {
   get(target, key) {
-    if (key === '__reactive_raw') {
+    if (key === REACTIVE_FLAGS.RAW) {
       return target
     }
     if (key === 'size') {
