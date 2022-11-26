@@ -23,11 +23,11 @@ importers:
   packages/utils:
     specifiers: {}
 
-  packages/vue/reactivity:
+  packages/vue-reactivity:
     specifiers:
       '@pudge-fe/utils': workspace:*
     dependencies:
-      '@pudge-fe/utils': link:../../utils
+      '@pudge-fe/utils': link:../utils
 
 packages:
 
