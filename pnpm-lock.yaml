@@ -20,14 +20,14 @@ importers:
       unbuild: 0.9.4
       vitest: 0.25.1
 
-  packages/reactivity:
+  packages/utils:
+    specifiers: {}
+
+  packages/vue/reactivity:
     specifiers:
       '@pudge-fe/utils': workspace:*
     dependencies:
-      '@pudge-fe/utils': link:../utils
-
-  packages/utils:
-    specifiers: {}
+      '@pudge-fe/utils': link:../../utils
 
 packages:
 

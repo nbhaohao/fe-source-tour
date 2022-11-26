@@ -1,5 +1,5 @@
 {
-  "name": "@pudge-fe/reactivity",
+  "name": "@pudge-fe/vue-reactivity",
   "version": "1.0.0",
   "description": "",
   "type": "module",
